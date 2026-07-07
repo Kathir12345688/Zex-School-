@@ -1,0 +1,26 @@
+# Python
+.venv/
+.venv-1/
+venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Environment
+.env
+
+# Django
+staticfiles/
+
+# Node
+node_modules/
+dist/
+
+# Testing
+.pytest_cache/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store

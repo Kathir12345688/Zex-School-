@@ -1,0 +1,103 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      text { font-family: 'Segoe UI', 'Poppins', sans-serif; }
+      .shield-outer { fill: none; stroke: #0A2E6D; stroke-width: 8; }
+      .shield-inner { fill: none; stroke: #D4A017; stroke-width: 3; }
+      .shield-bg { fill: #0A2E6D; }
+      .text-main { font-weight: 700; }
+      .text-sub { font-weight: 500; }
+    </style>
+  </defs>
+
+  <!-- Shield Outer Border -->
+  <path class="shield-outer" d="M 80 80 L 320 80 L 320 240 Q 200 360 200 360 Q 200 360 80 240 Z"/>
+
+  <!-- Shield Inner Border -->
+  <path class="shield-inner" d="M 88 88 L 312 88 L 312 240 Q 200 352 200 352 Q 200 352 88 240 Z"/>
+
+  <!-- Shield Background -->
+  <path class="shield-bg" d="M 88 88 L 312 88 L 312 240 Q 200 352 200 352 Q 200 352 88 240 Z"/>
+
+  <!-- TOP SECTION: STAR -->
+  <g id="star">
+    <polygon points="200,110 206,130 228,130 212,142 218,162 200,150 182,162 188,142 172,130 194,130" fill="#D4A017"/>
+  </g>
+
+  <!-- TOP SECTION: TORCH -->
+  <g id="torch">
+    <!-- Torch handle (vertical rod) -->
+    <rect x="194" y="150" width="12" height="45" fill="#D4A017"/>
+    
+    <!-- Torch flame -->
+    <path d="M 185 150 Q 180 130 200 115 Q 220 130 215 150 Q 213 140 200 140 Q 187 140 185 150 Z" fill="#D4A017"/>
+    <path d="M 188 148 Q 185 135 200 125 Q 215 135 212 148 Q 210 140 200 138 Q 190 140 188 148 Z" fill="#FFF"/>
+  </g>
+
+  <!-- MIDDLE SECTION: OPEN BOOK -->
+  <g id="book">
+    <!-- Left page -->
+    <path d="M 155 180 L 165 180 L 168 250 L 155 250 Z" fill="#FFF" stroke="#D4A017" stroke-width="1.5"/>
+    <!-- Book spine -->
+    <rect x="165" y="180" width="4" height="70" fill="#D4A017"/>
+    <!-- Right page -->
+    <path d="M 169 180 L 245 180 L 245 250 L 169 250 Z" fill="#FFF" stroke="#D4A017" stroke-width="1.5"/>
+    
+    <!-- Left page lines (text indication) -->
+    <line x1="160" y1="195" x2="163" y2="195" stroke="#D4A017" stroke-width="1"/>
+    <line x1="160" y1="205" x2="163" y2="205" stroke="#D4A017" stroke-width="1"/>
+    <line x1="160" y1="215" x2="163" y2="215" stroke="#D4A017" stroke-width="1"/>
+    <line x1="160" y1="225" x2="163" y2="225" stroke="#D4A017" stroke-width="1"/>
+    
+    <!-- Right page lines (text indication) -->
+    <line x1="180" y1="195" x2="230" y2="195" stroke="#D4A017" stroke-width="1"/>
+    <line x1="180" y1="205" x2="230" y2="205" stroke="#D4A017" stroke-width="1"/>
+    <line x1="180" y1="215" x2="230" y2="215" stroke="#D4A017" stroke-width="1"/>
+    <line x1="180" y1="225" x2="230" y2="225" stroke="#D4A017" stroke-width="1"/>
+  </g>
+
+  <!-- LOWER SECTION: GRADUATION CAP -->
+  <g id="cap">
+    <!-- Cap board (square top) -->
+    <rect x="170" y="255" width="60" height="8" fill="#D4A017" stroke="#0A2E6D" stroke-width="1"/>
+    
+    <!-- Cap front (hemisphere) -->
+    <path d="M 175 263 Q 175 280 200 280 Q 225 280 225 263" fill="#D4A017" stroke="#0A2E6D" stroke-width="1"/>
+    
+    <!-- Tassel line -->
+    <line x1="200" y1="263" x2="200" y2="285" stroke="#D4A017" stroke-width="1.5"/>
+    <!-- Tassel ball -->
+    <circle cx="200" cy="290" r="3" fill="#D4A017"/>
+  </g>
+
+  <!-- LOWER SECTION: LAUREL WREATH -->
+  <g id="laurel-wreath">
+    <!-- Left laurel branch -->
+    <path d="M 155 280 Q 140 290 145 310" fill="none" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/>
+    <!-- Left laurel leaves -->
+    <ellipse cx="150" cy="285" rx="3" ry="6" fill="#D4A017" transform="rotate(-30 150 285)"/>
+    <ellipse cx="145" cy="295" rx="3" ry="6" fill="#D4A017" transform="rotate(-20 145 295)"/>
+    <ellipse cx="143" cy="305" rx="3" ry="6" fill="#D4A017" transform="rotate(-10 143 305)"/>
+    
+    <!-- Right laurel branch -->
+    <path d="M 245 280 Q 260 290 255 310" fill="none" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/>
+    <!-- Right laurel leaves -->
+    <ellipse cx="250" cy="285" rx="3" ry="6" fill="#D4A017" transform="rotate(30 250 285)"/>
+    <ellipse cx="255" cy="295" rx="3" ry="6" fill="#D4A017" transform="rotate(20 255 295)"/>
+    <ellipse cx="257" cy="305" rx="3" ry="6" fill="#D4A017" transform="rotate(10 257 305)"/>
+  </g>
+
+  <!-- DECORATIVE HORIZONTAL LINE -->
+  <rect x="120" y="320" width="160" height="2" fill="#D4A017"/>
+
+  <!-- MAIN TEXT: ZEX -->
+  <text x="200" y="370" font-size="54" font-weight="700" text-anchor="middle" fill="#0A2E6D" letter-spacing="2" class="text-main">ZEX</text>
+
+  <!-- SECONDARY TEXT: School Name -->
+  <text x="200" y="398" font-size="14" font-weight="600" text-anchor="middle" fill="#0A2E6D" letter-spacing="0.5" class="text-sub">MATRICULATION HIGHER SECONDARY</text>
+  <text x="200" y="416" font-size="14" font-weight="600" text-anchor="middle" fill="#0A2E6D" letter-spacing="0.5" class="text-sub">SCHOOL</text>
+
+  <!-- MOTTO -->
+  <text x="200" y="445" font-size="12" font-weight="700" text-anchor="middle" fill="#D4A017" letter-spacing="1.5" class="text-main">LEARN • GROW • SUCCEED</text>
+
+</svg>
