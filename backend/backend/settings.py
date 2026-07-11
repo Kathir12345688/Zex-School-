@@ -20,9 +20,25 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-zex-school-key')
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Keep localhost available for local development, but allow Render hosts to be passed in via the environment.
+default_hosts = ['localhost', '127.0.0.1']
+env_hosts = os.getenv('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [host.strip() for host in env_hosts.split(',') if host.strip()]
+if not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = default_hosts
+else:
+    ALLOWED_HOSTS = list(dict.fromkeys(default_hosts + ALLOWED_HOSTS))
+
+# Debug mode should stay enabled locally but be turned off in production on Render.
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+
+# Only use a hard-coded fallback secret while debugging locally. Render must provide SECRET_KEY in production.
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-zex-school-key'
+    else:
+        raise RuntimeError('SECRET_KEY environment variable is required when DEBUG=False')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,6 +61,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Required for serving collected static files on Render.
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -72,6 +89,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+# Use PostgreSQL when Render provides the DB_* environment variables; otherwise continue using SQLite locally.
 if os.getenv('DB_USE_POSTGRES', 'False').lower() == 'true':
     DATABASES = {
         'default': {
@@ -111,10 +129,12 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+# Static files are collected into STATIC_ROOT during deployment and served by WhiteNoise on Render.
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -146,12 +166,15 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
 }
 
-CORS_ALLOWED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173,http://127.0.0.1:5174').split(',')
-    if origin.strip()
-]
+default_origins = ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174']
+env_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in env_origins.split(',') if origin.strip()]
+if not CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS = default_origins
+else:
+    CORS_ALLOWED_ORIGINS = list(dict.fromkeys(default_origins + CORS_ALLOWED_ORIGINS))
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
+CSRF_TRUSTED_ORIGINS = [origin for origin in CORS_ALLOWED_ORIGINS if origin.startswith('https://')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
