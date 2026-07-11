@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: zexsch-backend
+    env: python
+    plan: free
+    buildCommand: "cd backend && pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "cd backend && gunicorn backend.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.11
+      - key: DEBUG
+        value: False
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_USE_POSTGRES
+        value: True

@@ -14,6 +14,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -89,8 +90,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Use PostgreSQL when Render provides the DB_* environment variables; otherwise continue using SQLite locally.
-if os.getenv('DB_USE_POSTGRES', 'False').lower() == 'true':
+# Use Render's DATABASE_URL when present. Otherwise, fall back to DB_* variables for PostgreSQL or SQLite locally.
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+    }
+elif os.getenv('DB_USE_POSTGRES', 'False').lower() == 'true':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
