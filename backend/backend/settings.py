@@ -21,17 +21,19 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Keep localhost available for local development, but allow Render hosts to be passed in via the environment.
-default_hosts = ['localhost', '127.0.0.1']
+# Keep localhost available for local development, but always allow the Render hostname used in production.
+render_host = 'zex-school.onrender.com'
+default_hosts = ['localhost', '127.0.0.1', render_host]
 env_hosts = os.getenv('ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [host.strip() for host in env_hosts.split(',') if host.strip()]
-if not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = default_hosts
-else:
-    ALLOWED_HOSTS = list(dict.fromkeys(default_hosts + ALLOWED_HOSTS))
+parsed_hosts = [host.strip() for host in env_hosts.split(',') if host.strip()]
+ALLOWED_HOSTS = list(dict.fromkeys(default_hosts + parsed_hosts))
 
 # Debug mode should stay enabled locally but be turned off in production on Render.
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+
+# Render terminates SSL at the edge, so Django must trust the forwarded scheme/host headers.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 
 # Only use a hard-coded fallback secret while debugging locally. Render must provide SECRET_KEY in production.
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -172,15 +174,22 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
 }
 
-default_origins = ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174']
+default_origins = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    'https://zex-school.onrender.com',
+]
 env_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in env_origins.split(',') if origin.strip()]
-if not CORS_ALLOWED_ORIGINS:
-    CORS_ALLOWED_ORIGINS = default_origins
-else:
-    CORS_ALLOWED_ORIGINS = list(dict.fromkeys(default_origins + CORS_ALLOWED_ORIGINS))
+parsed_origins = [origin.strip() for origin in env_origins.split(',') if origin.strip()]
+CORS_ALLOWED_ORIGINS = list(dict.fromkeys(default_origins + parsed_origins))
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
-CSRF_TRUSTED_ORIGINS = [origin for origin in CORS_ALLOWED_ORIGINS if origin.startswith('https://')]
+
+default_csrf_origins = ['https://zex-school.onrender.com']
+env_csrf_origins = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+parsed_csrf_origins = [origin.strip() for origin in env_csrf_origins.split(',') if origin.strip()]
+https_cors_origins = [origin for origin in CORS_ALLOWED_ORIGINS if origin.startswith('https://')]
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(default_csrf_origins + parsed_csrf_origins + https_cors_origins))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
