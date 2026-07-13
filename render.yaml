@@ -14,3 +14,7 @@ services:
         generateValue: true
       - key: DB_USE_POSTGRES
         value: True
+      - key: CORS_ALLOWED_ORIGINS
+        value: http://localhost:5173,https://zex-school.vercel.app
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://zex-school.vercel.app

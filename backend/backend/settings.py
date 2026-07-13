@@ -62,11 +62,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Required for serving collected static files on Render.
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Required for serving collected static files on Render.
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -183,18 +183,18 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
 }
 
-default_origins = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:5174',
-    'https://zex-school.onrender.com',
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        'CORS_ALLOWED_ORIGINS',
+        'http://localhost:5173,https://zex-school.vercel.app'
+    ).split(',')
+    if origin.strip()
 ]
-env_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
-parsed_origins = [origin.strip() for origin in env_origins.split(',') if origin.strip()]
-CORS_ALLOWED_ORIGINS = list(dict.fromkeys(default_origins + parsed_origins))
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 
+# Allow the Render backend host and any HTTPS origins allowed by CORS to submit CSRF-protected requests.
 default_csrf_origins = ['https://zex-school.onrender.com']
 env_csrf_origins = os.getenv('CSRF_TRUSTED_ORIGINS', '')
 parsed_csrf_origins = [origin.strip() for origin in env_csrf_origins.split(',') if origin.strip()]
