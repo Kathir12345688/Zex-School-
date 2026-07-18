@@ -5,6 +5,7 @@ import Modal from '../components/Modal'
 import ImageUpload from '../components/ImageUpload'
 import api from '../../services/api'
 import usePageTitle from '../../utils/usePageTitle'
+import { confirmDeleteItem, showDeleteError, showDeleteSuccess } from '../../utils/sweetAlert'
 
 const defaultForm = {
   title: '',
@@ -147,12 +148,16 @@ const ManagementPage = ({
   }
 
   const handleDelete = async (item) => {
-    if (!window.confirm(`Delete ${singularLabel.toLowerCase()}?`)) return
+    const result = await confirmDeleteItem()
+    if (!result.isConfirmed) return
+
     try {
       await api.delete(`${endpoint}${item.id}/`)
       await fetchItems()
+      await showDeleteSuccess()
     } catch (err) {
       setError(err.response?.data?.detail || 'Unable to delete the record.')
+      await showDeleteError()
     }
   }
 

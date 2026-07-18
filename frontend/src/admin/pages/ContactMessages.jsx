@@ -3,6 +3,7 @@ import AdminLayout from '../layouts/AdminLayout'
 import Loader from '../../components/Loader/Loader'
 import api from '../../services/api'
 import usePageTitle from '../../utils/usePageTitle'
+import { confirmDeleteItem, showDeleteError, showDeleteSuccess } from '../../utils/sweetAlert'
 
 const ContactMessages = () => {
   const [messages, setMessages] = useState([])
@@ -45,12 +46,16 @@ const ContactMessages = () => {
   }
 
   const deleteMessage = async (message) => {
-    if (!window.confirm('Delete this message?')) return
+    const result = await confirmDeleteItem()
+    if (!result.isConfirmed) return
+
     try {
       await api.delete(`/contact/${message.id}/`)
       await fetchMessages()
+      await showDeleteSuccess()
     } catch (err) {
       setError(err.response?.data?.detail || 'Unable to delete the message.')
+      await showDeleteError()
     }
   }
 
