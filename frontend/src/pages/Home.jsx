@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import PublicLayout from '../components/Layout/PublicLayout'
 import HeroSlider from '../components/Hero/HeroSlider'
 import SectionHeading from '../components/Layout/SectionHeading'
-import InfoCard from '../components/Cards/InfoCard'
 import EventCard from '../components/Events/EventCard'
 import CounterStat from '../components/Common/CounterStat'
 import TestimonialSlider from '../components/Testimonials/TestimonialSlider'
@@ -69,15 +68,11 @@ const Home = () => {
                 <span>•</span>
                 <span>Modern Facilities & Safe Learning Environment</span>
                 <span>•</span>
-                <span>STEM, Arts & Leadership Programs</span>
-                <span>•</span>
               </div>
               <div className="marquee-group" aria-hidden="true">
                 <span>Admissions Open for the New Academic Year</span>
                 <span>•</span>
                 <span>Modern Facilities & Safe Learning Environment</span>
-                <span>•</span>
-                <span>STEM, Arts & Leadership Programs</span>
                 <span>•</span>
               </div>
             </div>
@@ -95,17 +90,6 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="page-section" data-reveal data-reveal-direction="left">
-        <div className="container">
-          <SectionHeading eyebrow="Facilities" title="Facilities" description="" />
-          <div className="grid grid--3">
-            {facilities?.slice(0, 3).map((item, index) => (
-              <InfoCard key={item.id} title={item.title} description={item.description} image={getMediaUrl(item.image)} icon={item.icon} actionLabel="Explore" actionHref="/facilities" reveal revealDirection={index % 2 === 0 ? 'left' : 'right'} revealDelay={index * 200} className="home-card-reveal" />
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="page-section page-section--subtle" data-reveal data-reveal-direction="right">
         <div className="container about-principal">
           <div className="about-principal__content" data-reveal data-reveal-direction="right">
@@ -114,17 +98,6 @@ const Home = () => {
           </div>
           <div className="about-principal__media" data-reveal data-reveal-direction="left">
             {about?.image ? <img src={getMediaUrl(about.image)} alt="Principal" /> : <div className="about-principal__placeholder">Principal Photo</div>}
-          </div>
-        </div>
-      </section>
-
-      <section className="page-section" data-reveal data-reveal-direction="left">
-        <div className="container">
-          <SectionHeading eyebrow="Academics" title="Academics" description="" />
-          <div className="grid grid--3">
-            {academics?.slice(0, 3).map((item, index) => (
-              <InfoCard key={item.id} title={item.title} description={item.description} image={getMediaUrl(item.image)} actionLabel="View" actionHref="/academics" reveal revealDirection={index % 2 === 0 ? 'left' : 'right'} revealDelay={index * 200} className="home-card-reveal" />
-            ))}
           </div>
         </div>
       </section>
