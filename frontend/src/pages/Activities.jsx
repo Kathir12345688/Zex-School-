@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import PublicLayout from '../components/Layout/PublicLayout'
 import SectionHeading from '../components/Layout/SectionHeading'
 import Loader from '../components/Loader/Loader'
@@ -77,9 +78,9 @@ const Activities = () => {
                     <p className="eyebrow">Student life</p>
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
-                    <a className="button facility-section__button" href="/about">
+                    <Link className="button facility-section__button" to="/admissions">
                       Learn more
-                    </a>
+                    </Link>
                   </div>
                 </section>
               )
